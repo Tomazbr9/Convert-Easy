@@ -1,0 +1,51 @@
+:root {
+    --colorPrimary: #2BC016;
+    --colorTerciary: #D4F2D2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    background-color: var(--colorTerciary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Montserrat", sans-serif;
+}
+
+.logo {
+    width: 40px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-brand p {
+    margin: 0;
+}
+
+.file-type-icon {
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+.file-type-icon.selected {
+    background-color: var(--colorPrimary);
+    color: white;
+}
+
+.btn-primary {
+    background-color: var(--colorPrimary);
+}
+
+.btn-primary:hover {
+    background-color: #0e4307;
+}

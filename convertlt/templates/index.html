@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block main_content %}
+<div class="container my-5">
+    <!-- Título da Página -->
+    <div class="text-center mb-4">
+        <h1 class="display-4">Convert Your Files Easily</h1>
+        <p class="lead">Upload a file, choose the format, and get your converted file instantly!</p>
+    </div>
+
+    <!-- Formulário de Upload -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form 
+                    method="post" 
+                    action="{% url "file-upload" %}" 
+                    enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Seleção de tipo de arquivo por ícones -->
+                        <div class="mb-3 text-center">
+                            <label class="form-label">Choose File Type</label>
+                            <div class="d-flex justify-content-center">
+                                <div class="file-type-icon mx-3" data-filetype="video" id="video-icon">
+                                    <i class="bi bi-camera-reels-fill" style="font-size: 2rem;"></i>
+                                    <p>Video</p>
+                                </div>
+                                <div class="file-type-icon mx-3" data-filetype="audio" id="audio-icon">
+                                    <i class="bi bi-music-note-beamed" style="font-size: 2rem;"></i>
+                                    <p>Audio</p>
+                                </div>
+                                <div class="file-type-icon mx-3" data-filetype="pdf" id="pdf-icon">
+                                    <i class="bi bi-file-earmark-pdf-fill" style="font-size: 2rem;"></i>
+                                    <p>PDF</p>
+                                </div>
+                                <div class="file-type-icon mx-3" data-filetype="word" id="pdf-icon">
+                                    <i class="bi bi-file-earmark-word" style="font-size: 2rem;"></i>
+                                    <p>Word</p>
+                                </div>
+                                <div class="file-type-icon mx-3" data-filetype="image" id="image-icon">
+                                    <i class="bi bi-file-image" style="font-size: 2rem;"></i>
+                                    <p>Image</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo de seleção de arquivo -->
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Select File</label>
+                            <input type="file" accept="" class="form-control" id="file" name="file">
+                        </div>
+
+                        <!-- Campo de seleção de formato de conversão -->
+                        <div class="mb-3">
+                            <label for="format" class="form-label">Choose Format</label>
+                            <select class="form-select" id="format" name="format">
+                                <!-- Formatos de conversão baseados no tipo de arquivo escolhido -->
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Convert File</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}
