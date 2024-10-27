@@ -1,9 +1,10 @@
 import os
 from pdf2docx import Converter
 from pdf2image import convert_from_path
+from pdfminer.high_level import extract_text
 from .useful_functions import download_return, compress_file
 
-
+# Função que converte documentos pdf em docx
 def convert_pdf_to_docx(input_path, output_path, original_filename):
     extension = 'docx'
     output_path = os.path.join(output_path, f'{original_filename}.{extension}')
@@ -17,6 +18,7 @@ def convert_pdf_to_docx(input_path, output_path, original_filename):
         print("Error:", e)
         return None
 
+# Função que converte documentos pdf em imagem
 def convert_pdf_to_image(input_path, output_path, original_filename):
     extension = 'png'
     images = convert_from_path(input_path)
@@ -38,5 +40,17 @@ def convert_pdf_to_image(input_path, output_path, original_filename):
     return download_return(input_path, zip_path, original_filename, 'zip')
 
 
-# if __name__ == '__main__':
-#     convert_pdf_to_docx(r"C:\Users\Tomaz\Downloads\Prova A1 Canvas RC 2024 2 - Respostas 3 (1).pdf", 'docx')
+# Função que converte documentos pdf em texto
+def convert_pdf_to_text(input_path, output_path, original_filename):
+    extension = 'txt'
+    text = extract_text(input_path)
+    output_path = os.path.join(output_path, f'{original_filename}.{extension}')
+    
+    with open(output_path, 'w') as file:
+        file.write(text)
+
+    return download_return(input_path, output_path, original_filename, 'txt')
+
+
+
+

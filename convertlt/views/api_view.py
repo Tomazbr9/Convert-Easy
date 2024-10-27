@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from convertlt.models import FileUpload
 from convertlt.serializer import FileUploadSerializer
-from utils.conversions import convert_pdf_to_docx, convert_pdf_to_image
+from utils.pdf_conversions import *
 
 class FileUploadView(APIView):
     def post(self, request, *args, **kwargs):
@@ -34,14 +34,15 @@ class FileUploadView(APIView):
                     input_path, output_path, original_filename
                 )
             
-            print(f'+++++++++++++++++{format.lower()}++++++++++++++++++++')
-            
             # Verifica se o arquivo é PDF e o formato é IMG
             if input_path.endswith('.pdf') and format.lower() == 'img':
                 # Converte o arquivo PDF para IMG
                 return convert_pdf_to_image(
                     input_path, output_path, original_filename
                 )
+            
+            if input_path.endswith('.pdf') and format.lower() == 'txt':
+                return convert_pdf_to_text(input_path, output_path, original_filename)
                 
             # Retorna erro se o formato não for suportado ou se o arquivo não for PDF
             return HttpResponseBadRequest("Invalid file type or unsupported format.")

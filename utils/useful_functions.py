@@ -27,7 +27,7 @@ def delete_files_temporarily(response, file_name, input_path, output_path):
 
     return response
 
-
+# Compacta arquivos convertidos em uma pasta
 def compress_file(files, output_path):
     with zipfile.ZipFile(output_path, 'w') as zipf:
         for file in files:
