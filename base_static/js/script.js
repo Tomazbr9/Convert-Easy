@@ -46,7 +46,7 @@ icons.forEach(icon => {
         } else if (filetype === 'image') {
             file.accept = ".jpg, .png, .gif"
             formatSelect.innerHTML = `
-                <option value="jpg">JPG</option>
+                <option value="jpeg">JPEG</option>
                 <option value="png">PNG</option>
                 <option value="gif">GIF</option>
             `;
