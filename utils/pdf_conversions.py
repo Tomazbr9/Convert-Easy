@@ -13,7 +13,7 @@ def convert_pdf_to_docx(input_path, output_path, original_filename):
         cv.convert(output_path, start=0, end=None) # type: ignore
         cv.close()
         return download_return(
-            input_path, output_path, original_filename, extension)
+            output_path, original_filename, extension)
     except Exception as e:
         print("Error:", e)
         return None
@@ -37,7 +37,7 @@ def convert_pdf_to_image(input_path, output_path, original_filename):
     
     compress_file(image_paths, zip_path)
     
-    return download_return(input_path, zip_path, original_filename, 'zip')
+    return download_return(zip_path, original_filename, 'zip')
 
 
 # Função que converte documentos pdf em texto
@@ -49,7 +49,7 @@ def convert_pdf_to_text(input_path, output_path, original_filename):
     with open(output_path, 'w') as file:
         file.write(text)
 
-    return download_return(input_path, output_path, original_filename, 'txt')
+    return download_return(output_path, original_filename, 'txt')
 
 
 
