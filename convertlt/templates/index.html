@@ -10,12 +10,14 @@
     <!-- Formulário de Upload -->
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
+            <div id="container-form" class="card shadow-sm">
                 <div class="card-body">
                     <form 
-                    method="post" 
+                    id="upload-form"
+                    method="post"
                     action="{% url "file-upload" %}" 
-                    enctype="multipart/form-data">
+                    enctype="multipart/form-data"
+                    onsubmit="showLoading(event)">
                         {% csrf_token %}
 
                         <!-- Seleção de tipo de arquivo por ícones -->
@@ -59,8 +61,20 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Convert File</button>
+                        <button id="btn-convert" type="submit" class="btn btn-primary w-100">
+                            <span id="btn-text">
+                                Convert File
+                            </span>
+                            <div class="spinner-border spinner-border-sm text-light" role="status" id="spinner" style="display: none"></div>
+                        </button>
                     </form>
+                </div>
+                <div id="resultContainer" class="card mt-4" style="display: none;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" id="fileName">Nome do Arquivo</h5>
+                        <div id="containerImage" class="img-converted"></div>
+                        <a id="downloadButton" class="btn btn-success" href="" download>Baixar Arquivo</a>
+                    </div>
                 </div>
             </div>
         </div>
