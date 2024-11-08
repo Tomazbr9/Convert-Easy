@@ -1,12 +1,15 @@
 import os
 from PIL import Image
-from .useful_functions import download_return
+from .useful_functions import json_return, file_info
 
 # função para converter imagens
-def convert_image(input_path, outut_path, original_name, extension):
+def convert_image(request, input_path, extension):
     img = Image.open(input_path)
-    outut_path = os.path.join(outut_path, f'{original_name}.{extension}')
+    output_path = file_info(input_path, extension)
     if img.mode in ('RGBA', 'P'):
         img = img.convert('RGB')
-    img.save(outut_path, format=extension.upper())
-    return download_return(outut_path, original_name, extension)
+    try:
+        img.save(output_path, format=extension.upper())
+        return json_return(request, output_path)
+    except Exception as e:
+        print("erro ao converter imagem: ", e)

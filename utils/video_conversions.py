@@ -1,11 +1,11 @@
 import os
 from moviepy.editor import VideoFileClip
-from .useful_functions import download_return
+from .useful_functions import download_return, json_return, file_info
 
 # função para converter videos
-def convert_video(input_path, output_path, original_filename, extension):
+def convert_video(request, input_path, extension):
     video = VideoFileClip(input_path)
-    output_path = os.path.join(output_path, f'{original_filename}.{extension}')
+    output_path = file_info(input_path, extension)
     video.write_videofile(
         output_path, codec='libx264' if extension == 'mp4' else 'libxvid')
-    return download_return(output_path, original_filename, extension)
+    return json_return(request, output_path)

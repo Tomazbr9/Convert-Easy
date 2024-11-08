@@ -70,40 +70,50 @@ function showLoading(event) {
 
     const formData = new FormData(document.getElementById('upload-form'))
 
-    fetch('/upload', {
+    fetch('/upload/', {
         method: 'POST',
         body: formData
-    }).then(response => response.json).then(data => {
+    }).then(response => response.json()).then(data => {
+        btnText.style.display = 'inline-block'
+        spinner.style.display = 'none'
         const containerResult = document.getElementById('resultContainer')
-        const containerImage = document.getElementById('containerConvert')
+        const containerImage = document.getElementById('containerImage')
+        const downloadButton = document.getElementById('downloadButton')
         containerResult.style.display = 'block' 
+
+        console.log(data.fileName)
+        console.log(data.fileUrl)
         
-        fileExtension = data.fileName.split('.').pop().toLowerCase()
+        const fileExtension = data.fileName.split('.').pop().toLowerCase()
         fileName.textContent = data.fileName
-        btnConvert.href = data.fileUrl
+        downloadButton.href = data.fullUrl
 
         containerImage.innerHTML = ''
         if (['png', 'jpeg', 'jpg'].includes(fileExtension)){
-            const img = document.createElement('img')
-            img.src = data.fileUrl
-            img.alt = 'Prévia do arquivo'
-            containerImage.appendChild(img)
+            containerImage.innerHTML = '<i class="bi bi-file-earmark-image"></i>'
         } else if (fileExtension === 'pdf'){
             containerImage.innerHTML = '<i class="bi bi-file-earmark-pdf"></i>'
-        } else if (['mp4', 'avi', 'mov'].includes(fileExtension)) {
+        } else if (['mp4', 'avi', 'mov'].includes(fileExtension)){
             containerImage.innerHTML = '<i class="bi bi-filetype-mp4"></i>'
         } else if (fileExtension === 'docx'){
             containerImage.innerHTML = '<i class="bi bi-filetype-docx"></i>'
         } else if (fileExtension === 'txt'){
             containerImage.innerHTML = '<i class="bi bi-filetype-txt"></i>'
-        } else {
+        } else if (['mp3', 'wav', 'flac'].includes(fileExtension)){
+            containerImage.innerHTML = '<i class="bi bi-file-earmark-music"></i>'
+        } 
+          else {
             containerImage.innerHTML = '<i class="bi bi-file-earmark"></i>'
         }
+
+        containerResult.scrollIntoView({
+            behavior: 'smooth', block: 'start'
+        })
     })
     .catch(error => {
         console.error('erro no upload: ', error)
         spinner.style.display = 'none'
-        btnConvert.style.display = 'block'
+        btnText.style.display = 'block'
 
         alert('erro no upload, tente novamente.')
     })

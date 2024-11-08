@@ -1,12 +1,12 @@
 import os
 from pydub import AudioSegment
-from .useful_functions import download_return
+from .useful_functions import download_return, json_return, file_info
 
 # função para converter audios
-def convert_audio(input_path, output_path, original_filename, extension):
+def convert_audio(request, input_path, extension):
     audio = AudioSegment.from_file(input_path)
-    output_path = os.path.join(output_path, f'{original_filename}.{extension}')
+    output_path = file_info(input_path, extension)
     audio.export(output_path, format=extension)
-    return download_return(output_path, original_filename, extension)
+    return json_return(request, output_path)
 
     

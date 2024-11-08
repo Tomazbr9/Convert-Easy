@@ -1,6 +1,8 @@
 import os
 import zipfile
 from django.http import FileResponse, HttpResponse
+from rest_framework.response import Response
+from django.conf import settings
 
 # Funcão que Força o Download do arquivo convertido no navegador
 def download_return(output_path, original_filename, extension):
@@ -25,3 +27,19 @@ def compress_file(files, output_path):
                 zipf.write(file, os.path.basename(file))
 
 
+def json_return(request, fileUrl):
+    file_name = 'conversions/' + os.path.basename(fileUrl)
+    file_path = os.path.join(settings.MEDIA_URL, file_name)
+    full_url = request.build_absolute_uri(file_path)
+   
+    return Response({
+        'fileName': file_name,
+        'fileUrl': fileUrl,
+        'fullUrl': full_url
+    })
+
+
+def file_info(input_path, format):
+    output_path = os.path.splitext(input_path)[0] + f'.{format}'
+    return output_path
+   

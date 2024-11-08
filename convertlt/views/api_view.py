@@ -20,56 +20,70 @@ class FileUploadView(APIView):
             # Salva o arquivo enviado
             instance = serializer.save()
             # Caminho do arquivo enviado
-            input_path = instance.file.path # type: ignore
-            
+            input_path = instance.file.path  # type: ignore
             # Obtém o formato desejado do input
             format = request.data.get('format')
-            
-            # Nome do arquivo original sem extensão
-            original_filename = os.path.splitext(os.path.basename(input_path))[0]
-            # Define o caminho do arquivo de saída com o mesmo nome do original
-            output_path = os.path.join(settings.MEDIA_ROOT, 'conversions')
+
+            # Lista de formatos válidos
+            valid_formats = [
+                'pdf', 'docx', 'png', 'jpeg', 'jpg', 'gif', 'img',
+                'txt', 'mp3', 'wav', 'flac', 'avi', 'mp4', 'mov'
+            ]
+
+            if format.lower() not in valid_formats:
+                return HttpResponseBadRequest(f"Formato '{format}' não é suportado.")
             
             # Verifica se o arquivo é PDF e o formato desejado é DOCX
             if input_path.endswith('.pdf') and format.lower() == 'docx':
-                # Converte o arquivo PDF para DOCX
-                return convert_pdf_to_docx(
-                    input_path, output_path, original_filename
-                )
+                try:
+                    return convert_pdf_to_docx(request, input_path, format)
+                except Exception as e:
+                    return HttpResponseBadRequest(f"Erro ao converter PDF para DOCX: {str(e)}")
             
             # Verifica se o arquivo enviado é PDF e o formato desejado é IMG
             if input_path.endswith('.pdf') and format.lower() == 'img':
-                # Converte o arquivo PDF para IMG
-                return convert_pdf_to_image(
-                    input_path, output_path, original_filename
-                )
+                try:
+                    return convert_pdf_to_image(request, input_path, format)
+                except Exception as e:
+                    return HttpResponseBadRequest(f"Erro ao converter PDF para IMG: {str(e)}")
             
-            # Verifica se o arquivo é PDF e o formato desejado é IMG
+            # Converte PDF para texto
             if input_path.endswith('.pdf') and format.lower() == 'txt':
-                # Converte o arquivo PDF para txt
-                return convert_pdf_to_text(
-                    input_path, output_path, original_filename)
+                try:
+                    return convert_pdf_to_text(request, input_path, format)
+                except Exception as e:
+                    return HttpResponseBadRequest(f"Erro ao converter PDF para TXT: {str(e)}")
 
             # Converte formatos 'docx' em pdf ou txt    
             if input_path.endswith('.docx'):
-                return convert_docx_to_pdf(
-                    input_path, output_path, original_filename, format)
+                try:
+                    return convert_docx_to_pdf(request, input_path, format)
+                except Exception as e:
+                    return HttpResponseBadRequest(f"Erro ao converter DOCX: {str(e)}")
             
             # Verifica se o arquivo é uma imagem para a conversão
-            if input_path.endswith('.png') | input_path.endswith('.jpg') | input_path.endswith('.gif'):
-                return convert_image(
-                    input_path, output_path, original_filename, format)
+            if input_path.endswith(('.png', '.jpg', '.gif')):
+                try:
+                    return convert_image(request, input_path, format)
+                except Exception as e:
+                    return HttpResponseBadRequest(f"Erro ao converter imagem: {str(e)}")
             
-            # Verifica se o arquivo é um audio para a conversão
-            if input_path.endswith('.mp3') | input_path.endswith('.wav') | input_path.endswith('.flac'):
-                return convert_audio(input_path, output_path, original_filename, format)
+            # Verifica se o arquivo é um áudio para a conversão
+            if input_path.endswith(('.mp3', '.wav', '.flac')):
+                try:
+                    return convert_audio(request, input_path, format)
+                except Exception as e:
+                    return HttpResponseBadRequest(f"Erro ao converter áudio: {str(e)}")
             
-            # Verifica se o arquivo é um video para a conversão
-            if input_path.endswith('.mp4') | input_path.endswith('.avi') | input_path.endswith('.mov'):
-                return convert_video(input_path, output_path, original_filename, format)
+            # Verifica se o arquivo é um vídeo para a conversão
+            if input_path.endswith(('.mp4', '.avi', '.mov')):
+                try:
+                    return convert_video(request, input_path, format)
+                except Exception as e:
+                    return HttpResponseBadRequest(f"Erro ao converter vídeo: {str(e)}")
                 
             # Retorna erro se o formato não for suportado
-            return HttpResponseBadRequest("Invalid file type or unsupported format.")
+            return HttpResponseBadRequest("Tipo de arquivo inválido ou formato não suportado.")
         
         # Retorna erros de validação do serializer
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
