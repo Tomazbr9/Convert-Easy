@@ -2,9 +2,14 @@
 const icons = document.querySelectorAll('.file-type-icon');
 const formatSelect = document.getElementById('format');
 const file = document.getElementById('file')
+const msgError = document.getElementById('msgError')
 
 icons.forEach(icon => {
     icon.addEventListener('click', () => {
+
+        // Libera o envio de arquivos após selecionar o icone do formato desejado
+        file.style.pointerEvents = 'all'
+
         // Limpa a seleção anterior
         icons.forEach(i => i.classList.remove('selected'))
 
@@ -59,10 +64,11 @@ function showLoading(event) {
     // Previne o envio imediato do formulario
     event.preventDefault()
     // obtem o botão e seus elementos de texto e spinner
-    const btnConvert = document.getElementById("btn-convert")
-    const btnText = document.getElementById("btn-text")
-    const spinner = document.getElementById("spinner")
-    const fileName = document.getElementById("fileName")
+    const btnConvert = document.getElementById('btn-convert')
+    const btnText = document.getElementById('btn-text')
+    const spinner = document.getElementById('spinner')
+    const fileName = document.getElementById('fileName')
+    const containerResult = document.getElementById('resultContainer')
     
     // Esconde o texto e mostra o spinner
     btnText.style.display = 'none'
@@ -76,20 +82,16 @@ function showLoading(event) {
     }).then(response => response.json()).then(data => {
         btnText.style.display = 'inline-block'
         spinner.style.display = 'none'
-        const containerResult = document.getElementById('resultContainer')
         const containerImage = document.getElementById('containerImage')
         const downloadButton = document.getElementById('downloadButton')
         containerResult.style.display = 'block' 
 
-        console.log(data.fileName)
-        console.log(data.fileUrl)
-        
         const fileExtension = data.fileName.split('.').pop().toLowerCase()
         fileName.textContent = data.fileName
         downloadButton.href = data.fullUrl
 
         containerImage.innerHTML = ''
-        if (['png', 'jpeg', 'jpg'].includes(fileExtension)){
+        if (['png', 'jpeg', 'jpg', 'gif'].includes(fileExtension)){
             containerImage.innerHTML = '<i class="bi bi-file-earmark-image"></i>'
         } else if (fileExtension === 'pdf'){
             containerImage.innerHTML = '<i class="bi bi-file-earmark-pdf"></i>'
@@ -106,6 +108,8 @@ function showLoading(event) {
             containerImage.innerHTML = '<i class="bi bi-file-earmark"></i>'
         }
 
+        msgError.innerText = ''
+
         containerResult.scrollIntoView({
             behavior: 'smooth', block: 'start'
         })
@@ -114,7 +118,9 @@ function showLoading(event) {
         console.error('erro no upload: ', error)
         spinner.style.display = 'none'
         btnText.style.display = 'block'
-
-        alert('erro no upload, tente novamente.')
+        containerResult.style.display = 'none'
+        msgError.textContent = 'Erro no upload, tente novamente.'
     })
 }
+
+

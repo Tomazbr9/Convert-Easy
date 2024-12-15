@@ -1,6 +1,7 @@
 :root {
     --colorPrimary: #2BC016;
     --colorTerciary: #D4F2D2;
+    --colorError: #ff6347;
 }
 
 * {
@@ -47,9 +48,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-    background-color: #0e4307;
+    background-color: #1c870e;
 }
 
 .img-converted i {
     font-size: 50px;
+}
+
+.btn-convert {
+    background-color: var(--colorPrimary) !important;
+    color: #ffffff;
+}
+
+.btn-convert:hover {
+    background-color: #1c870e !important;
+    color: #ffffff;
+}
+
+.msg-error {
+    display: flex;
+    justify-content: center;
+    color: var(--colorError);
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-control {
+    pointer-events: none;
 }

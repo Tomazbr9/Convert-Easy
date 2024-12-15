@@ -28,10 +28,11 @@ def compress_file(files, output_path):
 
 
 def json_return(request, fileUrl):
-    file_name = 'conversions/' + os.path.basename(fileUrl)
-    file_path = os.path.join(settings.MEDIA_URL, file_name)
+    file_name = os.path.basename(fileUrl)
+    path_base = os.path.join(settings.MEDIA_URL, 'conversions/')
+    file_path = os.path.join(path_base, file_name)
     full_url = request.build_absolute_uri(file_path)
-   
+
     return Response({
         'fileName': file_name,
         'fileUrl': fileUrl,

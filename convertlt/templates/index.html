@@ -3,8 +3,8 @@
 <div class="container my-5">
     <!-- Título da Página -->
     <div class="text-center mb-4">
-        <h1 class="display-4">Convert Your Files Easily</h1>
-        <p class="lead">Upload a file, choose the format, and get your converted file instantly!</p>
+        <h1 class="display-4">Converta seus arquivos facilmente</h1>
+        <p class="lead">Carregue um arquivo, escolha o formato e receba seu arquivo convertido instantaneamente!</p>
     </div>
 
     <!-- Formulário de Upload -->
@@ -22,7 +22,7 @@
 
                         <!-- Seleção de tipo de arquivo por ícones -->
                         <div class="mb-3 text-center">
-                            <label class="form-label">Choose File Type</label>
+                            <label class="form-label">Escolha o tipo de arquivo</label>
                             <div class="d-flex justify-content-center">
                                 <div class="file-type-icon mx-3" data-filetype="video" id="video-icon">
                                     <i class="bi bi-camera-reels-fill" style="font-size: 2rem;"></i>
@@ -42,20 +42,20 @@
                                 </div>
                                 <div class="file-type-icon mx-3" data-filetype="image" id="image-icon">
                                     <i class="bi bi-file-image" style="font-size: 2rem;"></i>
-                                    <p>Image</p>
+                                    <p>Imagem</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Campo de seleção de arquivo -->
                         <div class="mb-3">
-                            <label for="file" class="form-label">Select File</label>
+                            <label for="file" class="form-label">Selecionar arquivo</label>
                             <input type="file" accept="" class="form-control" id="file" name="file">
                         </div>
 
                         <!-- Campo de seleção de formato de conversão -->
                         <div class="mb-3">
-                            <label for="format" class="form-label">Choose Format</label>
+                            <label for="format" class="form-label">Escolha o formato</label>
                             <select class="form-select" id="format" name="format">
                                 <!-- Formatos de conversão baseados no tipo de arquivo escolhido -->
                             </select>
@@ -63,18 +63,19 @@
 
                         <button id="btn-convert" type="submit" class="btn btn-primary w-100">
                             <span id="btn-text">
-                                Convert File
+                                Converter Arquivo
                             </span>
                             <div class="spinner-border spinner-border-sm text-light" role="status" id="spinner" style="display: none"></div>
                         </button>
+                        <p id="msgError" class="msg-error"></p>
                     </form>
                 </div>
-                <div id="resultContainer" class="card mt-4" style="display: none;">
-                    <div class="card-body text-center">
-                        <h5 class="card-title" id="fileName">Nome do Arquivo</h5>
-                        <div id="containerImage" class="img-converted"></div>
-                        <a id="downloadButton" class="btn btn-success" href="" download>Baixar Arquivo</a>
-                    </div>
+            </div>
+            <div id="resultContainer" class="card mt-4" style="display: none;">
+                <div class="card-body text-center">
+                    <h5 class="card-title" id="fileName">Nome do Arquivo</h5>
+                    <div id="containerImage" class="img-converted"></div>
+                    <a id="downloadButton" class="btn btn-convert" href="" download>Baixar Arquivo</a>
                 </div>
             </div>
         </div>

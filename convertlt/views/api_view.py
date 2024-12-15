@@ -1,6 +1,4 @@
 import os
-from django.conf import settings
-from django.http import HttpResponseBadRequest
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -31,59 +29,61 @@ class FileUploadView(APIView):
             ]
 
             if format.lower() not in valid_formats:
-                return HttpResponseBadRequest(f"Formato '{format}' não é suportado.")
+                return Response({'error': 'Formato não é suportado.'})
             
             # Verifica se o arquivo é PDF e o formato desejado é DOCX
             if input_path.endswith('.pdf') and format.lower() == 'docx':
                 try:
                     return convert_pdf_to_docx(request, input_path, format)
                 except Exception as e:
-                    return HttpResponseBadRequest(f"Erro ao converter PDF para DOCX: {str(e)}")
+                    return Response({'error': 'Erro ao converter PDF para DOCX'})
             
             # Verifica se o arquivo enviado é PDF e o formato desejado é IMG
             if input_path.endswith('.pdf') and format.lower() == 'img':
                 try:
                     return convert_pdf_to_image(request, input_path, format)
                 except Exception as e:
-                    return HttpResponseBadRequest(f"Erro ao converter PDF para IMG: {str(e)}")
+                    return Response({'error': 'Erro ao converter PDF para IMG'})
+                    
             
             # Converte PDF para texto
             if input_path.endswith('.pdf') and format.lower() == 'txt':
                 try:
                     return convert_pdf_to_text(request, input_path, format)
                 except Exception as e:
-                    return HttpResponseBadRequest(f"Erro ao converter PDF para TXT: {str(e)}")
+                    return Response({'error': 'Erro ao converter PDF para TXT'})
 
             # Converte formatos 'docx' em pdf ou txt    
             if input_path.endswith('.docx'):
                 try:
                     return convert_docx_to_pdf(request, input_path, format)
                 except Exception as e:
-                    return HttpResponseBadRequest(f"Erro ao converter DOCX: {str(e)}")
+                    return Response({'error': 'Erro ao converter DOCX'})
             
             # Verifica se o arquivo é uma imagem para a conversão
             if input_path.endswith(('.png', '.jpg', '.gif')):
                 try:
                     return convert_image(request, input_path, format)
                 except Exception as e:
-                    return HttpResponseBadRequest(f"Erro ao converter imagem: {str(e)}")
+                    return Response({'error': 'Erro ao converter IMG'})
             
             # Verifica se o arquivo é um áudio para a conversão
             if input_path.endswith(('.mp3', '.wav', '.flac')):
                 try:
                     return convert_audio(request, input_path, format)
                 except Exception as e:
-                    return HttpResponseBadRequest(f"Erro ao converter áudio: {str(e)}")
+                    return Response({'error': 'Erro ao converter AUDIO'})
+            
             
             # Verifica se o arquivo é um vídeo para a conversão
             if input_path.endswith(('.mp4', '.avi', '.mov')):
                 try:
                     return convert_video(request, input_path, format)
                 except Exception as e:
-                    return HttpResponseBadRequest(f"Erro ao converter vídeo: {str(e)}")
-                
+                    return Response({'error': 'Erro ao converter VÍDEO'})
+            
             # Retorna erro se o formato não for suportado
-            return HttpResponseBadRequest("Tipo de arquivo inválido ou formato não suportado.")
+            return Response({'error': 'Erro no upload'})
         
         # Retorna erros de validação do serializer
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
